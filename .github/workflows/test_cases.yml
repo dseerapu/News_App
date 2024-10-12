@@ -25,9 +25,18 @@ jobs:
         run: |
          git clone https://github.com/flutter/flutter.git $HOME/flutter
           echo "$HOME/flutter/bin" >> $GITHUB_PATH
+          flutter channel stable
+          fluttern upgrade
 
       - name: Run Flutter Pub Get
         run: flutter pub get
 
       - name: Run Flutter Tests
-        run: flutter test
+        run: |
+            if [ "${{ matrix.platform }}" == "android" ]; then
+            flutter test;  # Run tests for Android
+            elif [ "${{ matrix.platform }}" == "ios" ]; then
+            flutter test;  # Run tests for iOS
+            elif [ "${{ matrix.platform }}" == "web" ]; then
+            flutter test;  # Run tests for Web
+            fi
