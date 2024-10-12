@@ -1,0 +1,33 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch if needed
+  pull_request:
+    branches:
+      - main  # Change this to your default branch if needed
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'  # Specify your Java version if needed
+
+      - name: Install Flutter
+        run: |
+          git clone https://github.com/flutter/flutter.git /flutter
+          echo "/flutter/bin" >> $GITHUB_PATH
+
+      - name: Run Flutter Pub Get
+        run: flutter pub get
+
+      - name: Run Flutter Tests
+        run: flutter test
