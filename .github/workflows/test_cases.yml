@@ -71,19 +71,19 @@ jobs:
       run: flutter build web
 
     - name: Upload Android Build
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: android-build
         path: build/app/outputs/flutter-apk/app-release.apk
 
     - name: Upload iOS Build
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ios-build
         path: build/ios/iphoneos/app.ipa
 
     - name: Upload Web Build
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: web-build
         path: build/web
