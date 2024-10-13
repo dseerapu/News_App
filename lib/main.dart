@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_app/database/database_service.dart';
 import 'package:news_app/routes/routes.dart';
 
-void main() {
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseService().init();  // Initialize your database service
+
   runApp( const ProviderScope( child:  NewsApp()));
 }
 

@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/news/ui/news_screen.dart';
 import 'package:news_app/news_details/news_details.dart';
-import 'package:news_app/onboarding/onboarding_screen.dart';
+import 'package:news_app/profile/profile_screen.dart';
 import 'package:news_app/routes/news_app_routes.dart';
+import 'package:news_app/saved_news/saved_news_screen.dart';
 
 class RouteLoggerObserver extends NavigatorObserver {
   @override
@@ -21,18 +22,20 @@ class RouteLoggerObserver extends NavigatorObserver {
 final routerProvider = Provider.family<GoRouter, NavigatorObserver>(
   (ref, observer) {
     return GoRouter(
-      initialLocation: '/',
+      initialLocation: NewsAppRoutes.news.path,
       observers: [observer, RouteLoggerObserver()],
       routes: <RouteBase>[
+        
         GoRoute(
-          name: NewsAppRoutes.home.path, // ** Optional, add name to your routes. Allows you navigate by name instead of path
           path: '/',
-          builder: (context, state) => const OnboardingScreen(),
+          builder: (context, state) => const NewsScreen(),
         ),
+
         GoRoute(
           path: NewsAppRoutes.news.path,
           builder: (context, state) => const NewsScreen(),
         ),
+        
         GoRoute(
             path: NewsAppRoutes.newsDetails.path,
             name: 'newsDetails',
@@ -40,7 +43,16 @@ final routerProvider = Provider.family<GoRouter, NavigatorObserver>(
               return NewsDetailsScreen(
                 getIndex: int.parse(state.pathParameters['getIndex'] ?? ''),
               );
-            })
+            }),
+
+        GoRoute(path: NewsAppRoutes.savedNews.path,
+          builder: (context, state) => const SavedNewsScreen(),
+        ),
+
+        GoRoute(path: NewsAppRoutes.profile.path,
+          builder: (context, state) => const ProfileScreen(),
+        )
+
       ],
     );
   },

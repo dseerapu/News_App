@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:news_app/database/database_service.dart';
 import 'package:news_app/news/ui/news_item_widget.dart';
 
 class NewsListWidget extends StatelessWidget {
@@ -22,6 +23,9 @@ class NewsListWidget extends StatelessWidget {
         return NewsItemWidget(
           newsItem: newsData[index],
           onTap: () => onItemClick(index),
+          onSaveNews: (news) async => {
+              await DatabaseService().saveNews(news)
+          },
         );
       },
     );

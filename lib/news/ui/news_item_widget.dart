@@ -4,11 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 class NewsItemWidget extends StatelessWidget {
   final dynamic newsItem;
   final Function onTap;
+  final Function onSaveNews;
 
   const NewsItemWidget({
     super.key,
     required this.newsItem,
     required this.onTap,
+    required this.onSaveNews,
   });
 
   @override
@@ -36,14 +38,40 @@ class NewsItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    Text(
-                      newsItem.title!,
-                      maxLines: 2,
-                      style: GoogleFonts.spaceGrotesk(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+
+                    Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title text in an Expanded widget to allow multi-line wrapping
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              newsItem.title ?? 'No Title',
+                              maxLines: null, // Allows text to wrap into multiple lines
+                              style: GoogleFonts.spaceGrotesk(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+
+                      // Bookmark icon, aligned to the end
+                      IconButton(
+                        icon: const Icon(Icons.bookmark_outline),
+                        onPressed: () {
+                          onSaveNews(newsItem);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Saved "${newsItem.title}"')),
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                    ,
                     Text(
                       '${newsItem.description}',
                       style: TextStyle(

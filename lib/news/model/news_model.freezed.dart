@@ -20,10 +20,15 @@ News _$NewsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$News {
+  @HiveField(0)
   String? get title => throw _privateConstructorUsedError;
+  @HiveField(1)
   String? get author => throw _privateConstructorUsedError;
+  @HiveField(2)
   String? get urlToImage => throw _privateConstructorUsedError;
+  @HiveField(3)
   String? get description => throw _privateConstructorUsedError;
+  @HiveField(4)
   String? get content => throw _privateConstructorUsedError;
 
   /// Serializes this News to a JSON map.
@@ -41,11 +46,11 @@ abstract class $NewsCopyWith<$Res> {
       _$NewsCopyWithImpl<$Res, News>;
   @useResult
   $Res call(
-      {String? title,
-      String? author,
-      String? urlToImage,
-      String? description,
-      String? content});
+      {@HiveField(0) String? title,
+      @HiveField(1) String? author,
+      @HiveField(2) String? urlToImage,
+      @HiveField(3) String? description,
+      @HiveField(4) String? content});
 }
 
 /// @nodoc
@@ -102,11 +107,11 @@ abstract class _$$NewsImplCopyWith<$Res> implements $NewsCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? title,
-      String? author,
-      String? urlToImage,
-      String? description,
-      String? content});
+      {@HiveField(0) String? title,
+      @HiveField(1) String? author,
+      @HiveField(2) String? urlToImage,
+      @HiveField(3) String? description,
+      @HiveField(4) String? content});
 }
 
 /// @nodoc
@@ -156,24 +161,29 @@ class __$$NewsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$NewsImpl implements _News {
   const _$NewsImpl(
-      {this.title,
-      this.author,
-      this.urlToImage,
-      this.description,
-      this.content});
+      {@HiveField(0) this.title,
+      @HiveField(1) this.author,
+      @HiveField(2) this.urlToImage,
+      @HiveField(3) this.description,
+      @HiveField(4) this.content});
 
   factory _$NewsImpl.fromJson(Map<String, dynamic> json) =>
       _$$NewsImplFromJson(json);
 
   @override
+  @HiveField(0)
   final String? title;
   @override
+  @HiveField(1)
   final String? author;
   @override
+  @HiveField(2)
   final String? urlToImage;
   @override
+  @HiveField(3)
   final String? description;
   @override
+  @HiveField(4)
   final String? content;
 
   @override
@@ -218,23 +228,28 @@ class _$NewsImpl implements _News {
 
 abstract class _News implements News {
   const factory _News(
-      {final String? title,
-      final String? author,
-      final String? urlToImage,
-      final String? description,
-      final String? content}) = _$NewsImpl;
+      {@HiveField(0) final String? title,
+      @HiveField(1) final String? author,
+      @HiveField(2) final String? urlToImage,
+      @HiveField(3) final String? description,
+      @HiveField(4) final String? content}) = _$NewsImpl;
 
   factory _News.fromJson(Map<String, dynamic> json) = _$NewsImpl.fromJson;
 
   @override
+  @HiveField(0)
   String? get title;
   @override
+  @HiveField(1)
   String? get author;
   @override
+  @HiveField(2)
   String? get urlToImage;
   @override
+  @HiveField(3)
   String? get description;
   @override
+  @HiveField(4)
   String? get content;
 
   /// Create a copy of News
