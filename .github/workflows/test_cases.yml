@@ -1,40 +1,22 @@
-name: Flutter CI
+name: Flutter Test CI
 
 on:
   push:
-    branches:
-      - main  # Change this to your default branch if needed
+    branches: [ main ]
   pull_request:
-    branches:
-      - main  # Change this to your default branch if needed
+    branches: [ main ]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
+    runs-on: macos-latest  # Use macOS for iOS simulator access
+    strategy:
+      matrix:
+        device: [android, ios, chrome]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'  # Specify your Java version if needed
-
-      - name: Install Flutter
-        run: |
-         git clone https://github.com/flutter/flutter.git $HOME/flutter
-         echo "$HOME/flutter/bin" >> $GITHUB_PATH
-
-      - name: Run Flutter Pub Get
-        run: flutter pub get
-
-      - name: Run Flutter Tests
-        run: |
-            if [ "${{ matrix.platform }}" == "android" ]; then
-            flutter test;  # Run tests for Android
-            elif [ "${{ matrix.platform }}" == "ios" ]; then
-            flutter test;  # Run tests for iOS
-            elif [ "${{ matrix.platform }}" == "web" ]; then
-            flutter test;  # Run tests for Web
-            fi
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+    - run: flutter pub get
+    - name: Run tests on ${{ matrix.device }}
+      run: flutter test -d ${{ matrix.device }}
