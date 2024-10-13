@@ -16,6 +16,14 @@ class NewsDetailsBody extends StatelessWidget {
         Image.network(
           news.urlToImage ?? defaultImageURL,
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+              // Display an error widget if the image fails to load
+              return const Icon(
+                Icons.error,
+                size: 100,
+                color: Colors.red,
+              );
+            }
         ),
         Padding(
           padding: const EdgeInsets.all(16),
@@ -29,7 +37,7 @@ class NewsDetailsBody extends StatelessWidget {
                   height: 1,
                   fontWeight: FontWeight.bold,
                 ),
-              ),
+              ), 
               const Gap(12),
               Text(news.description ?? "No Description"),
               const Gap(8),

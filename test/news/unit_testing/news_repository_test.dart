@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:news_app/api/api_endpoint.dart';
 import 'package:news_app/news/model/news_model.dart';
 import 'package:news_app/news/repository/news_repository.dart';
-import 'news_mock_client.dart';
+import '../news_mock_client.dart';
 
 void main() {
   group('NewsRepository', () {
