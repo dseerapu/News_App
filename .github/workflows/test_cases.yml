@@ -1,4 +1,4 @@
-name: Flutter Test CI
+name: Flutter CI/CD Pipeline
 
 on:
   push:
@@ -7,8 +7,31 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
-    runs-on: macos-latest  # Use macOS for iOS simulator access
+  flutter_run:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Run Android app
+      run: flutter run -d android --no-sound-null-safety --no-pub --verbose --debug --no-hot --no-resident --no-build &
+      timeout-minutes: 1
+    
+    - name: Run iOS app
+      run: flutter run -d ios --no-sound-null-safety --no-pub --verbose --debug --no-hot --no-resident --no-build &
+      timeout-minutes: 1
+    
+    - name: Run Web app
+      run: flutter run -d chrome --no-sound-null-safety --no-pub --verbose --debug --no-hot --no-resident --no-build &
+      timeout-minutes: 1
+
+  run_tests:
+    needs: flutter_run
+    runs-on: macos-latest
     strategy:
       matrix:
         device: [android, ios, chrome]
@@ -17,6 +40,50 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: 'stable'
-    - run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
     - name: Run tests on ${{ matrix.device }}
       run: flutter test -d ${{ matrix.device }}
+
+  create_builds:
+    needs: run_tests
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Build Android APK
+      run: flutter build apk
+    
+    - name: Build iOS IPA
+      run: |
+        flutter build ios --release --no-codesign
+        cd build/ios/iphoneos
+        mkdir Payload
+        cp -r Runner.app Payload
+        zip -r app.ipa Payload
+    
+    - name: Build Web
+      run: flutter build web
+
+    - name: Upload Android Build
+      uses: actions/upload-artifact@v2
+      with:
+        name: android-build
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+    - name: Upload iOS Build
+      uses: actions/upload-artifact@v2
+      with:
+        name: ios-build
+        path: build/ios/iphoneos/app.ipa
+
+    - name: Upload Web Build
+      uses: actions/upload-artifact@v2
+      with:
+        name: web-build
+        path: build/web
