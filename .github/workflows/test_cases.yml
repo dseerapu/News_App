@@ -63,6 +63,14 @@ jobs:
     - name: Run integration tests on Android
       run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d android
 
+    - name: Start iOS Simulator
+      run: |
+        echo "Starting iOS Simulator..."
+        xcrun simctl boot "iPhone 14"
+        xcrun simctl bootstatus "iPhone 14" --wait
+        # Unlock the iOS simulator
+        xcrun simctl unlock "iPhone 14"
+
     - name: Run integration tests on iOS
       run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d ios
 
