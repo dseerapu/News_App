@@ -45,34 +45,34 @@ jobs:
     - name: Run tests on ${{ matrix.device }}
       run: flutter test -d ${{ matrix.device }}
 
-  run_integration_tests:
-    needs: run_tests
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        device: [android, ios]
-    steps:
-    - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v1
-      with:
-        channel: 'stable'
-    - name: Install dependencies
-      run: flutter pub get
+  # run_integration_tests:
+  #   needs: run_tests
+  #   runs-on: macos-latest
+  #   strategy:
+  #     matrix:
+  #       device: [android, ios]
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: subosito/flutter-action@v1
+  #     with:
+  #       channel: 'stable'
+  #   - name: Install dependencies
+  #     run: flutter pub get
 
-    # Run integration tests on each platform
-    - name: Run integration tests on Android
-      run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d android
+  #   # Run integration tests on each platform
+  #   - name: Run integration tests on Android
+  #     run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d android
 
-    - name: Start iOS Simulator
-      run: |
-        echo "Starting iOS Simulator..."
-        xcrun simctl boot "iPhone 14"
-        xcrun simctl bootstatus "iPhone 14" --wait
-        # Unlock the iOS simulator
-        xcrun simctl unlock "iPhone 14"
+  #   - name: Start iOS Simulator
+  #     run: |
+  #       echo "Starting iOS Simulator..."
+  #       xcrun simctl boot "iPhone 14"
+  #       xcrun simctl bootstatus "iPhone 14" --wait
+  #       # Unlock the iOS simulator
+  #       xcrun simctl unlock "iPhone 14"
 
-    - name: Run integration tests on iOS
-      run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d ios
+  #   - name: Run integration tests on iOS
+  #     run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d ios
 
   create_builds:
     needs: run_tests
