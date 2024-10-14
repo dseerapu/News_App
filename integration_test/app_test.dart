@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:news_app/main.dart';
@@ -10,7 +11,8 @@ void main() {
 
   testWidgets('Navigation Test', (WidgetTester tester) async {
     // Load the app
-    await tester.pumpWidget(const NewsApp());
+    await tester.pumpWidget(const ProviderScope(child: NewsApp()));
+    await tester.pumpAndSettle(); 
 
     // Find the Bottom Navigation Bar items
     final Finder homeTab = find.text('Home');
@@ -33,5 +35,12 @@ void main() {
 
     // Verify that the Profile screen is displayed
     expect(find.byType(ProfileScreen), findsOneWidget);
+
+    // Tap on the Profile tab
+    await tester.tap(homeTab);
+    await tester.pumpAndSettle(); // Wait for the navigation animation
+
+    // Verify that the Profile screen is displayed
+    expect(find.byType(NewsScreen), findsOneWidget);
   });
 }
