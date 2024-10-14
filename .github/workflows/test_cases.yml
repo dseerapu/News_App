@@ -63,7 +63,7 @@ jobs:
     - name: Run integration tests on ${{ matrix.device }}
       run: |
         flutter drive \
-          --target=integration_test/app_tests.dart \
+          --target=integration_test/app_test.dart \
           -d ${{ matrix.device }}
 
   create_builds:
