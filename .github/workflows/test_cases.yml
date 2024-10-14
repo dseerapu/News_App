@@ -60,11 +60,11 @@ jobs:
       run: flutter pub get
 
     # Run integration tests on each platform
-    - name: Run integration tests on ${{ matrix.device }}
-      run: |
-        flutter drive \
-          --target=integration_test/app_test.dart \
-          -d ${{ matrix.device }}
+    - name: Run integration tests on Android
+      run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d android
+
+    - name: Run integration tests on iOS
+      run: flutter drive --driver=test_driver/app_test.dart --target=integration_test/app_test.dart -d ios
 
   create_builds:
     needs: run_tests
